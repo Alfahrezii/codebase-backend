@@ -1,0 +1,1077 @@
+openapi: 3.0.0
+info:
+  title: codebase-service-user
+  description: This collection provide all endpoints of backend codebase which implement user service
+  contact: {}
+  version: '1.0'
+servers:
+  - url: '{protocol}://{host}:{port}/{service}'
+    variables:
+      protocol:
+        enum:
+          - http
+          - https
+        default: http
+      host:
+        default: localhost
+      port:
+        default: '9000'
+      service:
+        default: users
+paths:
+  /v1/register:
+    post:
+      tags:
+        - v1
+      summary: Register
+      description: |-
+        API endpoint to Register a new user
+
+        > A successful registration returns user object
+      operationId: Register
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+                - username
+                - password
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Username should be unique and can be anythings, no strict rules
+                password:
+                  type: string
+                  description: Password used for authentication purpose
+        required: false
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterSuccess'
+        '409':
+          description: Conflict
+          headers: {}
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UserAlreadyExist'
+                  - $ref: '#/components/schemas/InvalidParameter'
+      deprecated: false
+  /v1/login:
+    post:
+      tags:
+        - v1
+      summary: Login
+      description: |-
+        API endpoint to Login a user
+
+        > A successful login returns access token and refresh token
+      operationId: Login
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+                - username
+                - password
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Username which registered in the system
+                password:
+                  type: string
+                  description: Password should be matched with current password saved in the system
+        required: false
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginSuccess'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordDoesNotMatch'
+        '404':
+          description: Not Found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotFound'
+        '409':
+          description: Conflict
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidParameter'
+      deprecated: false
+  /v1/refresh-token:
+    post:
+      tags:
+        - v1
+      summary: Refresh Token
+      description: |-
+        API endpoint to generate a new pair of token
+
+        > A successful request returns new access token and refresh token
+      operationId: RefreshToken
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+                - refreshToken
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+                  description: Current refresh token
+        required: false
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshTokenSuccess'
+        '403':
+          description: Forbidden
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidRefreshToken'
+      deprecated: false
+  /v1/profile:
+    get:
+      tags:
+        - v1
+      summary: Get Profile
+      description: |-
+        API endpoint to get user details
+
+        > A successful request returns user object
+      operationId: GetProfile
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProfileSuccess'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpiredAccessToken'
+        '403':
+          description: Forbidden
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidAccessToken'
+      deprecated: false
+  /v2/register:
+    post:
+      tags:
+        - v2
+      summary: Register
+      description: |-
+        API endpoint to Register a new user
+
+        > A successful registration returns user object
+      operationId: PostRegister
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+                - username
+                - password
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Username should be unique and in the format of email or ID mobile number (prefix of +62)
+                password:
+                  type: string
+                  description: Password should be matched with current password saved in the system
+        required: false
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterSuccessV2'
+        '409':
+          description: Conflict
+          headers: {}
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UserAlreadyExist'
+                  - $ref: '#/components/schemas/InvalidParameter'
+      deprecated: false
+  /v2/verify:
+    post:
+      tags:
+        - v2
+      summary: Verify OTP
+      description: |-
+        API endpoint to Verify a registered user
+
+        > A successful request returns success message
+      operationId: VerifyOTP
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+                - username
+                - otp
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Username which registered in the system
+                otp:
+                  type: string
+                  description: OTP send to user by email or sms contain 6 characters of number
+        required: false
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyOTPSuccessV2'
+        '404':
+          description: Not Found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OTPNotFound'
+        '409':
+          description: Conflict
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OTPDoesNotmatch'
+      deprecated: false
+  /v2/login:
+    post:
+      tags:
+        - v2
+      summary: Login
+      description: |-
+        API endpoint to Login a user
+
+        > A successful login returns access token and refresh token
+      operationId: PostLogin
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+                - username
+                - password
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Username which registered in the system in the format of email or ID mobile number (prefix of +62)
+                password:
+                  type: string
+                  description: Password should be matched with current password saved in the system
+        required: false
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginSuccessV2'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordDoesNotMatch'
+        '404':
+          description: Not Found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotFound'
+        '409':
+          description: Conflict
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidParameter'
+      deprecated: false
+  /v2/refresh-token:
+    post:
+      tags:
+        - v2
+      summary: Refresh Token
+      description: |-
+        API endpoint to generate a new pair of token
+
+        > A successful request returns new access token and refresh token
+      operationId: PostRefreshToken
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+                - refreshToken
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+                  description: Current refresh token
+        required: false
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshTokenSuccessV2'
+              example:
+                success: true
+                data:
+                  accessToken: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjA0NDEsImV4cCI6MTYzOTQ2MTM0MSwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.L1Jp5vDjQDyiF0deNyoGLxwU9_Exgdx_-srswVPPXB9AF4aTZxsyzNXFUMZC91Ga8nB5nxfA5GgGKIx6wlMxx-Wtj5NEklK_gML9y9u7S4bPjGdFVmAjP4Fb0thslqnnPtpPTQRaHcajEtAYgyZsfRhEL_Six5DwlepLMTG4s_VYn-TPrLYm9k0VgpQ7iQY0xrJZqsBgKRVDzrUync5CtUGCoOGtWgLFRSEv4y0yT5NohhO_12nTZP_MNt5gZwZF5_lo_82hgCGFNS9mXbxYwxXEbthGd6RaGRKiwxboSEjrWkp1aD0fl3vLCz5RErjPdUex7G7kU19fDipEhWK3TmlZtu8C0lYLaiBRvXyGkOHs92eUvBsRxIr_kMN670-FSIObsWu8RzDfR7b_GtDGFl8fRFPwxFNnA1w7aDRuAa2akG5cg1lZpB8V63ErMU24P2VC5dQxVYwHsNJC_VPpmD3FAVb57YXj4SfGLvautNJmjOz_zyWvQcSd2qj_iSF8RyBZiD_D9wfiecXp3PzufE5J7xxr5J4_EQZfm09vfZ34pxTXfjA0vMYaO9QJYDPsE384DbxrsVwhld9hmziOfQRX4M0M1_Q0pvk7DZgN_v__y6pfwFIx7jsqOUB3oZj0_4QnkoPbrcH1QS_nd7C6k2IbG-Wcp3nFG5nEkhUvtaI
+                  refreshToken: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjA0NDEsImV4cCI6MTY0MDA2NTI0MSwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.JFWwa3atUYKJJCtKDPUw305AUeufnfTL5hulas9f_qTt4FIA8sCAvMtSggIGL3c8REZQwikHhF8ohewzLXlc3k052Ez2E-V1eJKkg4HJMncwcWEX0CLgUp21Dwq18jkiwSDizox64Pq00AgJX6-AAK8hU3RDV5ecH-TqvIsNSniBZxJMRxxxEblN5RhCelOaworqq2gpkdN1AdG6_j3YAQ4llW6v7CLi1IsipTp6jFYuLhl9QlyPHF98bttTDOlo9BZKqwvYoAQB6fPq4rsP7UD_P_ciWW4LUlzxVrA3lSUh1ER6eLZV8wjLCxMgMEOzaEytO2yWh3luSY-Y3ECBEsCzQOg579H6aP86gOTjHn_8rRm5dg_qKxAcJuD8uy3cpQN9k8fZLNT4HrEsfe-fMMcdEH4I0Peu8SBDdhFLNkegf6wPRdX81lF7ViUCheXLJRD3T76XO5xcrGN9Qq2OsYPezKBI_PWnn04G_ZDsj25sYsRoAiQtelKERakw6wuv5kWH7yBIUyZLoYSP8AyzuPRINhtarcCN2cQXQkhVgNT-bfa1lRfJ_1zEG85-17t18UnCl233r59Tt9qRD0BtCPUEUStVFBdP5yeL76paDbW3Rm3uYLfIlsySbj4TO4Sd_Ixr-7rTE1aWGB2T3y1q88hDXjU0qZRCAjdLkqv1aSo
+                message: Get Refresh Token
+                code: 200
+        '403':
+          description: Forbidden
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidRefreshToken'
+              example:
+                success: false
+                data: ''
+                message: Token is not valid
+                code: 403
+      deprecated: false
+  /v2/profile:
+    get:
+      tags:
+        - v2
+      summary: Get Profile
+      description: |-
+        API endpoint to get user details
+
+        > A successful request returns user object
+      operationId: GetProfile1
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProfileSuccessV2'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpiredAccessToken'
+        '403':
+          description: Forbidden
+          headers: {}
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/InvalidAccessToken'
+                  - $ref: '#/components/schemas/BlacklistedAccessToken'
+      deprecated: false
+  /v2/logout:
+    post:
+      tags:
+        - v2
+      summary: Logout
+      description: |-
+        API endpoint to Logout a user
+
+        > A successful request returns success message
+      operationId: Logout
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+                - accessToken
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  description: Current access token
+        required: false
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutSuccessV2'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpiredAccessToken'
+      deprecated: false
+components:
+  schemas:
+    RegisterSuccess:
+      title: RegisterSuccess
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/ResponseDataRegisterV1'
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: true
+        data:
+          username: friskigatra
+          isActive: true
+          _id: 61b82680d2a50208636c8120
+        message: Register User
+        code: 200
+    ResponseDataRegisterV1:
+      title: ResponseDataRegisterV1
+      required:
+        - username
+        - isActive
+        - _id
+      type: object
+      properties:
+        username:
+          type: string
+        isActive:
+          type: boolean
+        _id:
+          type: string
+      example:
+        username: friskigatra
+        isActive: true
+        _id: 61b82680d2a50208636c8120
+    UserAlreadyExist:
+      title: UserAlreadyExist
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: false
+        data: ''
+        message: user already exist
+        code: 409
+    InvalidParameter:
+      title: InvalidParameter
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: false
+        data: ''
+        message: '"password" is required'
+        code: 409
+    LoginSuccess:
+      title: LoginSuccess
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/ResponseDataLoginV1'
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: true
+        data:
+          token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyaXNraWdhdHJhIiwic3ViIjoiNjFiODI2ODBkMmE1MDIwODYzNmM4MTIwIiwiaWF0IjoxNjM5NDU4NzQ4LCJleHAiOjE2Mzk0NTk2NDgsImF1ZCI6Ijk3YjMzMTkzLTQzZmYtNGU1OC05MTI0LWIzYTliOWY3MmMzNCIsImlzcyI6InRlbGtvbWRldiJ9.p_aD_arc_LIPzomXE7NboTrossbqZ_he4q-YlGRJCf857zgoaaWLNgpEWrPb15lgC1y-H4CXhI2ATGVuGOs73EP_xVKwucApeon1cuVP2Ui4O2w3nZ0NU12i7k9aQogJzLhlObuQzt8Amigbuvo_tM6PYN7dRKpcsFxpkjHmnM_9It2XWTT3UDdZcnrl2DSdNm3kaBus0xJWMkwdM8UsqMZSWSaA8rKlPYhiKZWWRDCtIPIsJfAQDMRvIGzUIu1pcmrsNPdA3CKoBr2bWKDD_kKNwoLVxH43T9sUVMMW3rLd8BdZTkNDZH7Ym9NJ7HTN_A-q5iNdDmN7yZWG10P6k8VvgV6TNYU3UnhcVgUwlhNr9ICqYBQkS0W0e2ijwCte6nLGi9sBc1CmcnB66cOLoiR1_gyq_SxTMRyzsx2lbD5Vc-sXbvaHfTjpE2k-CK0Aixr4gVVV2_lVtLNsx7enPzLpN6HFjmK8qIGbjxVjjVovhXW0ihIYHskUvJ1cf0OU9aQn4TV-tRki6gj6HbN6vOKM1xoiqLO4u-EbGf-TXdooZf09Ay8S9UUsxeMJJRQAut1WX_x79b68k5HVC8L0aOe-H9HH5uEwY97_tMQwCBM8wAOp8VniOolDPxG6t7L_T_BHwmVGF1h-viTMBGwI5MWeL5UAzugOpi-9xrxeJzc
+          refreshToken: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyaXNraWdhdHJhIiwic3ViIjoiNjFiODI2ODBkMmE1MDIwODYzNmM4MTIwIiwiaWF0IjoxNjM5NDU4NzQ4LCJleHAiOjE2NDAwNjM1NDgsImF1ZCI6Ijk3YjMzMTkzLTQzZmYtNGU1OC05MTI0LWIzYTliOWY3MmMzNCIsImlzcyI6InRlbGtvbWRldiJ9.tgRpTwfSh1vVeKRx-PNVn5dJHziXrLqqdIAOsALuie67zMy1R92sWpRMci1e-tslKS0KLvygoMOk77_PsBFhf4hJ1A1oWByyBTNn7N2YJApoAl-U03nsN8bZY35k1CNG3zh12YPzKOzh1sBsbOgoa3L6m669hWxdMDzPjabgJx_hHnGZ7ezn7AjiWwI34yAyEREvQYxdje9WzpD54uO1fIYcdnC_TofnUy2lp634Kk-7IPEbqrO6ZqR7j6LY-EjMUkzWddXAr7lED-kfHWUhroWa6U6lk-NTdM0c6g1mol4G8_RycfJ5K9l3gl_9WxnUHceGE7sRtP03_tmyRWEyKodoPFYp6z5Mnb89l6-Lg3XnOPz3tl6wr_inK2vO7BD3VfSZhIdf5Nf-wTABuzajzeB3ssUgYXSFCO6rtu53i58LWIFBSnVfI_jpEMOcpvkEoDjGhWQ9WW-_nfakjv8vAQr_7yZertx4wsWwWx38pwXKsnE9YB6UXdzIRVMo-eCQrlah_47hWJbBaSyZKDoM4D8B6clShH9xsUYt7h2BH6JVm-TtlUhI4VNZvINoM1oAKeYtZ9IFIVoLc8h2QpZam7KwLeU59ZN8RNHoXgXqTTDci5WSSs4y0bs3mMQnlxvfwADW_iDKb836JWL9E6v0hpyZStCpYs0MLumLvz4CVjk
+        message: Login User
+        code: 200
+    ResponseDataLoginV1:
+      title: ResponseDataLoginV1
+      required:
+        - token
+        - refreshToken
+      type: object
+      properties:
+        token:
+          type: string
+        refreshToken:
+          type: string
+      example:
+        token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyaXNraWdhdHJhIiwic3ViIjoiNjFiODI2ODBkMmE1MDIwODYzNmM4MTIwIiwiaWF0IjoxNjM5NDU4NzQ4LCJleHAiOjE2Mzk0NTk2NDgsImF1ZCI6Ijk3YjMzMTkzLTQzZmYtNGU1OC05MTI0LWIzYTliOWY3MmMzNCIsImlzcyI6InRlbGtvbWRldiJ9.p_aD_arc_LIPzomXE7NboTrossbqZ_he4q-YlGRJCf857zgoaaWLNgpEWrPb15lgC1y-H4CXhI2ATGVuGOs73EP_xVKwucApeon1cuVP2Ui4O2w3nZ0NU12i7k9aQogJzLhlObuQzt8Amigbuvo_tM6PYN7dRKpcsFxpkjHmnM_9It2XWTT3UDdZcnrl2DSdNm3kaBus0xJWMkwdM8UsqMZSWSaA8rKlPYhiKZWWRDCtIPIsJfAQDMRvIGzUIu1pcmrsNPdA3CKoBr2bWKDD_kKNwoLVxH43T9sUVMMW3rLd8BdZTkNDZH7Ym9NJ7HTN_A-q5iNdDmN7yZWG10P6k8VvgV6TNYU3UnhcVgUwlhNr9ICqYBQkS0W0e2ijwCte6nLGi9sBc1CmcnB66cOLoiR1_gyq_SxTMRyzsx2lbD5Vc-sXbvaHfTjpE2k-CK0Aixr4gVVV2_lVtLNsx7enPzLpN6HFjmK8qIGbjxVjjVovhXW0ihIYHskUvJ1cf0OU9aQn4TV-tRki6gj6HbN6vOKM1xoiqLO4u-EbGf-TXdooZf09Ay8S9UUsxeMJJRQAut1WX_x79b68k5HVC8L0aOe-H9HH5uEwY97_tMQwCBM8wAOp8VniOolDPxG6t7L_T_BHwmVGF1h-viTMBGwI5MWeL5UAzugOpi-9xrxeJzc
+        refreshToken: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyaXNraWdhdHJhIiwic3ViIjoiNjFiODI2ODBkMmE1MDIwODYzNmM4MTIwIiwiaWF0IjoxNjM5NDU4NzQ4LCJleHAiOjE2NDAwNjM1NDgsImF1ZCI6Ijk3YjMzMTkzLTQzZmYtNGU1OC05MTI0LWIzYTliOWY3MmMzNCIsImlzcyI6InRlbGtvbWRldiJ9.tgRpTwfSh1vVeKRx-PNVn5dJHziXrLqqdIAOsALuie67zMy1R92sWpRMci1e-tslKS0KLvygoMOk77_PsBFhf4hJ1A1oWByyBTNn7N2YJApoAl-U03nsN8bZY35k1CNG3zh12YPzKOzh1sBsbOgoa3L6m669hWxdMDzPjabgJx_hHnGZ7ezn7AjiWwI34yAyEREvQYxdje9WzpD54uO1fIYcdnC_TofnUy2lp634Kk-7IPEbqrO6ZqR7j6LY-EjMUkzWddXAr7lED-kfHWUhroWa6U6lk-NTdM0c6g1mol4G8_RycfJ5K9l3gl_9WxnUHceGE7sRtP03_tmyRWEyKodoPFYp6z5Mnb89l6-Lg3XnOPz3tl6wr_inK2vO7BD3VfSZhIdf5Nf-wTABuzajzeB3ssUgYXSFCO6rtu53i58LWIFBSnVfI_jpEMOcpvkEoDjGhWQ9WW-_nfakjv8vAQr_7yZertx4wsWwWx38pwXKsnE9YB6UXdzIRVMo-eCQrlah_47hWJbBaSyZKDoM4D8B6clShH9xsUYt7h2BH6JVm-TtlUhI4VNZvINoM1oAKeYtZ9IFIVoLc8h2QpZam7KwLeU59ZN8RNHoXgXqTTDci5WSSs4y0bs3mMQnlxvfwADW_iDKb836JWL9E6v0hpyZStCpYs0MLumLvz4CVjk
+    UserNotFound:
+      title: UserNotFound
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: false
+        data: ''
+        message: user not found
+        code: 404
+    PasswordDoesNotMatch:
+      title: PasswordDoesNotMatch
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: false
+        data: ''
+        message: Password invalid!
+        code: 401
+    RefreshTokenSuccess:
+      title: RefreshTokenSuccess
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/ResponseDataLoginV1'
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: true
+        data:
+          token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWI4MjY4MGQyYTUwMjA4NjM2YzgxMjAiLCJpYXQiOjE2Mzk0NTkyNzMsImV4cCI6MTYzOTQ2MDE3MywiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.CDVeE3ZCJJKAzv_yCHz3lYcjPuKL40GdH92fi3m39dxseM49SCGFeyx_jrFwaCTy0Y2IvyF_HqphKPrHo8prjvUxU6Q1bAJObxmX_Eq4Kt0Nm4ZKXMWZQdlkfn6-xj3PkrchQ-DdI_oDux5BeNm4JXkckE2kZCSd-WCwyTgTL7NZvs6o8Zk-kZCe4QUwiyye6tu4Nsn_vequ22-nkbmZiMtYicNyRzVLsqJsSAmU06tQFIr4hMxajsWFkJmHbpaS8Sm20PXCsDKsiqQGC2rFYWefsGloT3nozPLweNqGFcFHu5AZlYGueh1xBAgiURlrLMEAbIsq-WiQlA_97bNkR92wz3PDKGB_UCwEMGIZ_1CL8Dp3bThdjo9-bvA-bXOknRKcEY0rZC_s6s9rCHK94jjBuRyIGZJCfkTW4zFV6g7qJ_iosL7qHuDN-RWSYwymMxdc6INtRkypia09bx9-CBnRgoEqeDZ2HNprfK9eKB2O_JYApPgwfATNObAkH8uABh8oXtJmc4M-FeQCGjO43Rs_qoXbwRgKscLh-AWa5IOzNCwSVS72wWwocnhVR4zladyRUdQeqTcTxxSlYkDRSmy7yJI_qdjUQO5axe5XaYgFYlkQpwIxCQL0M8CefHCLRtLJAPA4MW4rIchm_S_5XrLXqfrdxXY4fsawhnoG0yk
+          refreshToken: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWI4MjY4MGQyYTUwMjA4NjM2YzgxMjAiLCJpYXQiOjE2Mzk0NTkyNzMsImV4cCI6MTY0MDA2NDA3MywiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.rlBbpk9RO2oWUgaoWH668h6-H20T6I-jhPXPfegBJkz755Eg1vqSEBSSY6OnzH44PjBjJPJRHkr8_LSu2TLbidjHYblCKVEH4qdWTHIWif-zID2O5YT_M5FpO5zV_sPFxQWDnbgLo5Tumecfhu80Ewe3gL6oI5aIzdd7YNd6drC1PXgU6Rcs9Fv8TISgJyOCyd_R7TTR9LaOtIlDut-Jh3TzzncWCKJM0p7pVEuGkfK0j9yj6Lb7P9VbEX6AJFlQyIltnPfxHSLVXc4uCheHQ_rbriNggUQ4aNxZmBThi7Sywy1A-208ZMMcR7IbaDd9IGz0E3slBWJzPpI4IHzGc1OyLbvCU3ldd8j0u9kEYnvwMhqXRsWw_w8TXGr0dDTyXlPj8GuzqIS2h28a1JioAqBwB03z8lbDbOxaaJOKu6VNFg2ehAUIDONkpEOLS5GVpZX43z6gtJhcvG7lQcNsKo4hEQ9-ZnivP7_n5Jh3DlgJNK5pg-MpTR6IT96MOOjKVrArxxnmWYYo6eHCTfsIDFuf9VtXmOVNqqwS3y77icv_JMC-yMK27FANlXTT41eFLmVowGAZJwNd-yhVWDzkRIVFMnS1IgeQjZafeoGYla_NcwZIOyOwUhRmrPB0X5-JfcckYYAGE8XcvGYSig79iNClxygPvnFRnrlVGEizmYQ
+        message: Get Refresh Token
+        code: 200
+    InvalidRefreshToken:
+      title: InvalidRefreshToken
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: false
+        data: ''
+        message: Token is not valid
+        code: 403
+    GetProfileSuccess:
+      title: GetProfileSuccess
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/ResponseDataRegisterV1'
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: true
+        data:
+          _id: 61b82680d2a50208636c8120
+          username: friskigatra
+          isActive: true
+        message: Get User
+        code: 200
+    ExpiredAccessToken:
+      title: ExpiredAccessToken
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: false
+        data: ''
+        message: Access token expired!
+        code: 401
+    InvalidAccessToken:
+      title: InvalidAccessToken
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: false
+        data: ''
+        message: Invalid token!
+        code: 403
+    RegisterSuccessV2:
+      title: RegisterSuccessV2
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/ResponseDataRegisterV2'
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: true
+        data:
+          mobileNumber: '+6282119762787'
+          _id: 61b82490d2a50208636c811e
+        message: Register User
+        code: 200
+    ResponseDataRegisterV2:
+      title: ResponseDataRegisterV2
+      required:
+        - mobileNumber
+        - _id
+      type: object
+      properties:
+        mobileNumber:
+          type: string
+        _id:
+          type: string
+      example:
+        mobileNumber: '+6282119762787'
+        _id: 61b82490d2a50208636c811e
+    VerifyOTPSuccessV2:
+      title: VerifyOTPSuccessV2
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: true
+        data: success
+        message: Logout User
+        code: 200
+    OTPNotFound:
+      title: OTPNotFound
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: false
+        data: ''
+        message: user's otp not found
+        code: 404
+    OTPDoesNotmatch:
+      title: OTPDoesNotmatch
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: false
+        data: ''
+        message: user's otp doesn't match
+        code: 409
+    LoginSuccessV2:
+      title: LoginSuccessV2
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/ResponseDataLoginV2'
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: true
+        data:
+          accessToken: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjAzNzIsImV4cCI6MTYzOTQ2MTI3MiwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.o112Vnn3nfdbvRO5UNNz-oyDcvpy3XWqorjZEjVMz-Ho_0MZuweGMBoJVm1ELkpLYN33k2_ppSc9_Fzw7f6R3uik2CAbCyUqZht10vVxOFwwZ0CAHPbRgheulpdIQ1eCXJGKV28B913opNd9UkDRVoEBmU17u3Fv69i-E5czY6daFxgYkm417j9USZyoVpQmhiEccHYscc5EqjwDcNjnr8ILV1mxptBHq6jdX_PJD0q6JvB_x1VJJ3KPXB_7jLO2deqURuci2p8k8DJA5tC0loBF9D0lby0L_A8aNe3mVsF8EUvGNEtDdrLcQydZUxZ9QVjlnvUaQ5S5zDMg1aKyfEbHX5esIJ0P6Le4lqG1jo4x6_LC-6UJoIkaEOKk_chPGeSeUT4jrkkC72NRCbSO7_a0GWu9Z5VWuqui6u_lnz-p4l1Hli3uGwzhoZFlJ8xBgl6hQTl1SkKQiXZKjX4oN2r9cJ27B28Chjzax_TK3GRXdJ4jttNq4hWdknJq7HLM6thYYh1n6zF0rLYAZQ5spIYDnfkwsVmmxSLyHZTJMFi67GnvJo_taowTrKq4Na4YQBLRszQEf71WIiUWYrlCe0ezf51-KMNekfNO3H3aulZdPG4q6dQ39oiSiGEfXSwtMVqpyctWF7bBPtCu4b5JZzjiICB1hIjXgGUgMbY9Wek
+          refreshToken: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjAzNzIsImV4cCI6MTY0MDA2NTE3MiwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.PKaDPb3QeU_CypDthBEoOQ69n6WAwmRzgQQsQdo7I2BvVpvVBUXR9hBUAG6G9DYtz75JB1pesTThcJIQeIttWa6-GpyC4Y1N2MC9-FBrBbECIxBmkmD3ZlzwFxixhFpP77FDo2m63puhx4Kj3DZRIzJoItxV8WeE8t8wrKD4BdpogSis2g7SME1zsQTZRDWPXV5ggB_NO6Jl9vVB7qRNzfvFGk6Euqlpf5jBnyTCfVYoehIuTmGAaXG-SqYxGOJusxDxbY_k6j4yv4-z4dx9uKTTZWtGQfnIblhGv2ajoVuD5ZFR_syJbqLqjA1yu7c_K27PmcgROqy9WRhtIHRREmivFygevT2MBpGHnNTGc4PN6D7c75QheJFfmBYUAUyOeBrCfAT-iN6fnb5gdq0nEA8QU_YwJld7juov9AzLVP4fbIj8h7NxuJ5nEdGtYK9MdaAc_qTNOV-X4honY1ERgKVfHnEJ2-Q_LcptmkVEybW5qWnqG-9raI7rrZYLZ_wdjQC_DbglMY3gLbvWpig6U27VrP5fBvpHPNfA3keUkZaXMgQ3i9Tv9ZCBL50mVaqTbXgrKhPLScM5Z7k5cF_uC0pK_lem2t8X51ze3iTCJz-u-w1DirfB_hXyTBYDT1bBDhakSTPYdRnGpYaQrO97CvE5rlsXJKRKeOgDEJIBLGY
+        message: Login User
+        code: 200
+    ResponseDataLoginV2:
+      title: ResponseDataLoginV2
+      required:
+        - accessToken
+        - refreshToken
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+      example:
+        accessToken: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjAzNzIsImV4cCI6MTYzOTQ2MTI3MiwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.o112Vnn3nfdbvRO5UNNz-oyDcvpy3XWqorjZEjVMz-Ho_0MZuweGMBoJVm1ELkpLYN33k2_ppSc9_Fzw7f6R3uik2CAbCyUqZht10vVxOFwwZ0CAHPbRgheulpdIQ1eCXJGKV28B913opNd9UkDRVoEBmU17u3Fv69i-E5czY6daFxgYkm417j9USZyoVpQmhiEccHYscc5EqjwDcNjnr8ILV1mxptBHq6jdX_PJD0q6JvB_x1VJJ3KPXB_7jLO2deqURuci2p8k8DJA5tC0loBF9D0lby0L_A8aNe3mVsF8EUvGNEtDdrLcQydZUxZ9QVjlnvUaQ5S5zDMg1aKyfEbHX5esIJ0P6Le4lqG1jo4x6_LC-6UJoIkaEOKk_chPGeSeUT4jrkkC72NRCbSO7_a0GWu9Z5VWuqui6u_lnz-p4l1Hli3uGwzhoZFlJ8xBgl6hQTl1SkKQiXZKjX4oN2r9cJ27B28Chjzax_TK3GRXdJ4jttNq4hWdknJq7HLM6thYYh1n6zF0rLYAZQ5spIYDnfkwsVmmxSLyHZTJMFi67GnvJo_taowTrKq4Na4YQBLRszQEf71WIiUWYrlCe0ezf51-KMNekfNO3H3aulZdPG4q6dQ39oiSiGEfXSwtMVqpyctWF7bBPtCu4b5JZzjiICB1hIjXgGUgMbY9Wek
+        refreshToken: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjAzNzIsImV4cCI6MTY0MDA2NTE3MiwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.PKaDPb3QeU_CypDthBEoOQ69n6WAwmRzgQQsQdo7I2BvVpvVBUXR9hBUAG6G9DYtz75JB1pesTThcJIQeIttWa6-GpyC4Y1N2MC9-FBrBbECIxBmkmD3ZlzwFxixhFpP77FDo2m63puhx4Kj3DZRIzJoItxV8WeE8t8wrKD4BdpogSis2g7SME1zsQTZRDWPXV5ggB_NO6Jl9vVB7qRNzfvFGk6Euqlpf5jBnyTCfVYoehIuTmGAaXG-SqYxGOJusxDxbY_k6j4yv4-z4dx9uKTTZWtGQfnIblhGv2ajoVuD5ZFR_syJbqLqjA1yu7c_K27PmcgROqy9WRhtIHRREmivFygevT2MBpGHnNTGc4PN6D7c75QheJFfmBYUAUyOeBrCfAT-iN6fnb5gdq0nEA8QU_YwJld7juov9AzLVP4fbIj8h7NxuJ5nEdGtYK9MdaAc_qTNOV-X4honY1ERgKVfHnEJ2-Q_LcptmkVEybW5qWnqG-9raI7rrZYLZ_wdjQC_DbglMY3gLbvWpig6U27VrP5fBvpHPNfA3keUkZaXMgQ3i9Tv9ZCBL50mVaqTbXgrKhPLScM5Z7k5cF_uC0pK_lem2t8X51ze3iTCJz-u-w1DirfB_hXyTBYDT1bBDhakSTPYdRnGpYaQrO97CvE5rlsXJKRKeOgDEJIBLGY
+    RefreshTokenSuccessV2:
+      title: RefreshTokenSuccessV2
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/ResponseDataLoginV2'
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: true
+        data:
+          accessToken: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjA0NDEsImV4cCI6MTYzOTQ2MTM0MSwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.L1Jp5vDjQDyiF0deNyoGLxwU9_Exgdx_-srswVPPXB9AF4aTZxsyzNXFUMZC91Ga8nB5nxfA5GgGKIx6wlMxx-Wtj5NEklK_gML9y9u7S4bPjGdFVmAjP4Fb0thslqnnPtpPTQRaHcajEtAYgyZsfRhEL_Six5DwlepLMTG4s_VYn-TPrLYm9k0VgpQ7iQY0xrJZqsBgKRVDzrUync5CtUGCoOGtWgLFRSEv4y0yT5NohhO_12nTZP_MNt5gZwZF5_lo_82hgCGFNS9mXbxYwxXEbthGd6RaGRKiwxboSEjrWkp1aD0fl3vLCz5RErjPdUex7G7kU19fDipEhWK3TmlZtu8C0lYLaiBRvXyGkOHs92eUvBsRxIr_kMN670-FSIObsWu8RzDfR7b_GtDGFl8fRFPwxFNnA1w7aDRuAa2akG5cg1lZpB8V63ErMU24P2VC5dQxVYwHsNJC_VPpmD3FAVb57YXj4SfGLvautNJmjOz_zyWvQcSd2qj_iSF8RyBZiD_D9wfiecXp3PzufE5J7xxr5J4_EQZfm09vfZ34pxTXfjA0vMYaO9QJYDPsE384DbxrsVwhld9hmziOfQRX4M0M1_Q0pvk7DZgN_v__y6pfwFIx7jsqOUB3oZj0_4QnkoPbrcH1QS_nd7C6k2IbG-Wcp3nFG5nEkhUvtaI
+          refreshToken: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjA0NDEsImV4cCI6MTY0MDA2NTI0MSwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.JFWwa3atUYKJJCtKDPUw305AUeufnfTL5hulas9f_qTt4FIA8sCAvMtSggIGL3c8REZQwikHhF8ohewzLXlc3k052Ez2E-V1eJKkg4HJMncwcWEX0CLgUp21Dwq18jkiwSDizox64Pq00AgJX6-AAK8hU3RDV5ecH-TqvIsNSniBZxJMRxxxEblN5RhCelOaworqq2gpkdN1AdG6_j3YAQ4llW6v7CLi1IsipTp6jFYuLhl9QlyPHF98bttTDOlo9BZKqwvYoAQB6fPq4rsP7UD_P_ciWW4LUlzxVrA3lSUh1ER6eLZV8wjLCxMgMEOzaEytO2yWh3luSY-Y3ECBEsCzQOg579H6aP86gOTjHn_8rRm5dg_qKxAcJuD8uy3cpQN9k8fZLNT4HrEsfe-fMMcdEH4I0Peu8SBDdhFLNkegf6wPRdX81lF7ViUCheXLJRD3T76XO5xcrGN9Qq2OsYPezKBI_PWnn04G_ZDsj25sYsRoAiQtelKERakw6wuv5kWH7yBIUyZLoYSP8AyzuPRINhtarcCN2cQXQkhVgNT-bfa1lRfJ_1zEG85-17t18UnCl233r59Tt9qRD0BtCPUEUStVFBdP5yeL76paDbW3Rm3uYLfIlsySbj4TO4Sd_Ixr-7rTE1aWGB2T3y1q88hDXjU0qZRCAjdLkqv1aSo
+        message: Get Refresh Token
+        code: 200
+    GetProfileSuccessV2:
+      title: GetProfileSuccessV2
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/ResponseDataProfileV2'
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: true
+        data:
+          _id: 61b82b7dd2a50208636c8121
+          mobileNumber: '+6282119762787'
+          password: bbf89f764bfea1cfda30e3a9b1648918:cc4e4517ad99a948b2e5dce510596426
+          isConfirmed: true
+        message: Get User
+        code: 200
+    ResponseDataProfileV2:
+      title: ResponseDataProfileV2
+      required:
+        - _id
+        - mobileNumber
+        - password
+        - isConfirmed
+      type: object
+      properties:
+        _id:
+          type: string
+        mobileNumber:
+          type: string
+        password:
+          type: string
+        isConfirmed:
+          type: boolean
+      example:
+        _id: 61b82b7dd2a50208636c8121
+        mobileNumber: '+6282119762787'
+        password: bbf89f764bfea1cfda30e3a9b1648918:cc4e4517ad99a948b2e5dce510596426
+        isConfirmed: true
+    BlacklistedAccessToken:
+      title: BlacklistedAccessToken
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: false
+        data: ''
+        message: Blacklisted token!
+        code: 403
+    LogoutSuccessV2:
+      title: LogoutSuccessV2
+      required:
+        - success
+        - data
+        - message
+        - code
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+          format: int32
+      example:
+        success: true
+        data: success
+        message: Logout User
+        code: 200
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - basicAuth: []
+  - bearerAuth: []
+tags:
+  - name: v1
+    description: |-
+      This version contains following requests
+
+      *   Register a new user
+      *   Login a user by given credentials
+      *   Request a new pair of tokens (refresh token)
+      *   Get details for a user
+  - name: v2
+    description: |-
+      This version extends v1 capability of verification mechanism and JWT revocation strategy.
+
+      It contains following requests
+
+      *   Register a new user
+      *   **Verify registered user by OTP**
+      *   Login a user by given credentials
+      *   Request a new pair of tokens (refresh token)
+      *   Get details for a user
+      *   **Logout a user**

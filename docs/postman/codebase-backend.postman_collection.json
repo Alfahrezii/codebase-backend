@@ -1,0 +1,1978 @@
+{
+	"info": {
+		"_postman_id": "96977cf4-7258-4830-a628-60deaf21e79b",
+		"name": "codebase-service-user",
+		"description": "This collection provide all endpoints of backend codebase which implement user service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "v1",
+			"item": [
+				{
+					"name": "Register",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{basicAuthPassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{basicAuthUsername}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "",
+									"description": "Username should be unique and can be anythings, no strict rules",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"description": "Password used for authentication purpose",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/v1/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"v1",
+								"register"
+							]
+						},
+						"description": "API endpoint to Register a new user\n\n> A successful registration returns user object"
+					},
+					"response": [
+						{
+							"name": "Register Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"friskigatra\",\r\n    \"password\": \"telkom123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"success\": true,\r\n    \"data\": {\r\n        \"username\": \"friskigatra\",\r\n        \"isActive\": true,\r\n        \"_id\": \"61b82680d2a50208636c8120\"\r\n    },\r\n    \"message\": \"Register User\",\r\n    \"code\": 200\r\n}"
+						},
+						{
+							"name": "User Already Exist",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"friskigatra\",\r\n    \"password\": \"telkom123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"register"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"user already exist\",\n    \"code\": 409\n}"
+						},
+						{
+							"name": "Invalid Parameter",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic dGVsa29tOmRhMWMyNWQ4LTM3YzgtNDFiMS1hZmUyLTQyZGQ0ODI1YmZlYQ==",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"friskigatra\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"register"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"\\\"password\\\" is required\",\n    \"code\": 409\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{basicAuthPassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{basicAuthUsername}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "",
+									"description": "Username which registered in the system",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"description": "Password should be matched with current password saved in the system",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/v1/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"v1",
+								"login"
+							]
+						},
+						"description": "API endpoint to Login a user\n\n> A successful login returns access token and refresh token"
+					},
+					"response": [
+						{
+							"name": "Login Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"friskigatra\",\r\n    \"password\": \"telkom123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyaXNraWdhdHJhIiwic3ViIjoiNjFiODI2ODBkMmE1MDIwODYzNmM4MTIwIiwiaWF0IjoxNjM5NDU4NzQ4LCJleHAiOjE2Mzk0NTk2NDgsImF1ZCI6Ijk3YjMzMTkzLTQzZmYtNGU1OC05MTI0LWIzYTliOWY3MmMzNCIsImlzcyI6InRlbGtvbWRldiJ9.p_aD_arc_LIPzomXE7NboTrossbqZ_he4q-YlGRJCf857zgoaaWLNgpEWrPb15lgC1y-H4CXhI2ATGVuGOs73EP_xVKwucApeon1cuVP2Ui4O2w3nZ0NU12i7k9aQogJzLhlObuQzt8Amigbuvo_tM6PYN7dRKpcsFxpkjHmnM_9It2XWTT3UDdZcnrl2DSdNm3kaBus0xJWMkwdM8UsqMZSWSaA8rKlPYhiKZWWRDCtIPIsJfAQDMRvIGzUIu1pcmrsNPdA3CKoBr2bWKDD_kKNwoLVxH43T9sUVMMW3rLd8BdZTkNDZH7Ym9NJ7HTN_A-q5iNdDmN7yZWG10P6k8VvgV6TNYU3UnhcVgUwlhNr9ICqYBQkS0W0e2ijwCte6nLGi9sBc1CmcnB66cOLoiR1_gyq_SxTMRyzsx2lbD5Vc-sXbvaHfTjpE2k-CK0Aixr4gVVV2_lVtLNsx7enPzLpN6HFjmK8qIGbjxVjjVovhXW0ihIYHskUvJ1cf0OU9aQn4TV-tRki6gj6HbN6vOKM1xoiqLO4u-EbGf-TXdooZf09Ay8S9UUsxeMJJRQAut1WX_x79b68k5HVC8L0aOe-H9HH5uEwY97_tMQwCBM8wAOp8VniOolDPxG6t7L_T_BHwmVGF1h-viTMBGwI5MWeL5UAzugOpi-9xrxeJzc\",\n        \"refreshToken\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyaXNraWdhdHJhIiwic3ViIjoiNjFiODI2ODBkMmE1MDIwODYzNmM4MTIwIiwiaWF0IjoxNjM5NDU4NzQ4LCJleHAiOjE2NDAwNjM1NDgsImF1ZCI6Ijk3YjMzMTkzLTQzZmYtNGU1OC05MTI0LWIzYTliOWY3MmMzNCIsImlzcyI6InRlbGtvbWRldiJ9.tgRpTwfSh1vVeKRx-PNVn5dJHziXrLqqdIAOsALuie67zMy1R92sWpRMci1e-tslKS0KLvygoMOk77_PsBFhf4hJ1A1oWByyBTNn7N2YJApoAl-U03nsN8bZY35k1CNG3zh12YPzKOzh1sBsbOgoa3L6m669hWxdMDzPjabgJx_hHnGZ7ezn7AjiWwI34yAyEREvQYxdje9WzpD54uO1fIYcdnC_TofnUy2lp634Kk-7IPEbqrO6ZqR7j6LY-EjMUkzWddXAr7lED-kfHWUhroWa6U6lk-NTdM0c6g1mol4G8_RycfJ5K9l3gl_9WxnUHceGE7sRtP03_tmyRWEyKodoPFYp6z5Mnb89l6-Lg3XnOPz3tl6wr_inK2vO7BD3VfSZhIdf5Nf-wTABuzajzeB3ssUgYXSFCO6rtu53i58LWIFBSnVfI_jpEMOcpvkEoDjGhWQ9WW-_nfakjv8vAQr_7yZertx4wsWwWx38pwXKsnE9YB6UXdzIRVMo-eCQrlah_47hWJbBaSyZKDoM4D8B6clShH9xsUYt7h2BH6JVm-TtlUhI4VNZvINoM1oAKeYtZ9IFIVoLc8h2QpZam7KwLeU59ZN8RNHoXgXqTTDci5WSSs4y0bs3mMQnlxvfwADW_iDKb836JWL9E6v0hpyZStCpYs0MLumLvz4CVjk\"\n    },\n    \"message\": \"Login User\",\n    \"code\": 200\n}"
+						},
+						{
+							"name": "Invalid Parameter",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"friskigatra\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"register"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"\\\"password\\\" is required\",\n    \"code\": 409\n}"
+						},
+						{
+							"name": "User Not Found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"friski\",\r\n    \"password\": \"telkom123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"login"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"user not found\",\n    \"code\": 404\n}"
+						},
+						{
+							"name": "Password Does Not Match",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"friskigatra\",\r\n    \"password\": \"telkom\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"Password invalid!\",\n    \"code\": 401\n}"
+						}
+					]
+				},
+				{
+					"name": "Refresh Token",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{basicAuthPassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{basicAuthUsername}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "refreshToken",
+									"value": "",
+									"description": "Current refresh token",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/v1/refresh-token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"v1",
+								"refresh-token"
+							]
+						},
+						"description": "API endpoint to generate a new pair of token\n\n> A successful request returns new access token and refresh token"
+					},
+					"response": [
+						{
+							"name": "Refresh Token Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refreshToken\": {{refreshToken}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/refresh-token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"refresh-token"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWI4MjY4MGQyYTUwMjA4NjM2YzgxMjAiLCJpYXQiOjE2Mzk0NTkyNzMsImV4cCI6MTYzOTQ2MDE3MywiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.CDVeE3ZCJJKAzv_yCHz3lYcjPuKL40GdH92fi3m39dxseM49SCGFeyx_jrFwaCTy0Y2IvyF_HqphKPrHo8prjvUxU6Q1bAJObxmX_Eq4Kt0Nm4ZKXMWZQdlkfn6-xj3PkrchQ-DdI_oDux5BeNm4JXkckE2kZCSd-WCwyTgTL7NZvs6o8Zk-kZCe4QUwiyye6tu4Nsn_vequ22-nkbmZiMtYicNyRzVLsqJsSAmU06tQFIr4hMxajsWFkJmHbpaS8Sm20PXCsDKsiqQGC2rFYWefsGloT3nozPLweNqGFcFHu5AZlYGueh1xBAgiURlrLMEAbIsq-WiQlA_97bNkR92wz3PDKGB_UCwEMGIZ_1CL8Dp3bThdjo9-bvA-bXOknRKcEY0rZC_s6s9rCHK94jjBuRyIGZJCfkTW4zFV6g7qJ_iosL7qHuDN-RWSYwymMxdc6INtRkypia09bx9-CBnRgoEqeDZ2HNprfK9eKB2O_JYApPgwfATNObAkH8uABh8oXtJmc4M-FeQCGjO43Rs_qoXbwRgKscLh-AWa5IOzNCwSVS72wWwocnhVR4zladyRUdQeqTcTxxSlYkDRSmy7yJI_qdjUQO5axe5XaYgFYlkQpwIxCQL0M8CefHCLRtLJAPA4MW4rIchm_S_5XrLXqfrdxXY4fsawhnoG0yk\",\n        \"refreshToken\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWI4MjY4MGQyYTUwMjA4NjM2YzgxMjAiLCJpYXQiOjE2Mzk0NTkyNzMsImV4cCI6MTY0MDA2NDA3MywiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.rlBbpk9RO2oWUgaoWH668h6-H20T6I-jhPXPfegBJkz755Eg1vqSEBSSY6OnzH44PjBjJPJRHkr8_LSu2TLbidjHYblCKVEH4qdWTHIWif-zID2O5YT_M5FpO5zV_sPFxQWDnbgLo5Tumecfhu80Ewe3gL6oI5aIzdd7YNd6drC1PXgU6Rcs9Fv8TISgJyOCyd_R7TTR9LaOtIlDut-Jh3TzzncWCKJM0p7pVEuGkfK0j9yj6Lb7P9VbEX6AJFlQyIltnPfxHSLVXc4uCheHQ_rbriNggUQ4aNxZmBThi7Sywy1A-208ZMMcR7IbaDd9IGz0E3slBWJzPpI4IHzGc1OyLbvCU3ldd8j0u9kEYnvwMhqXRsWw_w8TXGr0dDTyXlPj8GuzqIS2h28a1JioAqBwB03z8lbDbOxaaJOKu6VNFg2ehAUIDONkpEOLS5GVpZX43z6gtJhcvG7lQcNsKo4hEQ9-ZnivP7_n5Jh3DlgJNK5pg-MpTR6IT96MOOjKVrArxxnmWYYo6eHCTfsIDFuf9VtXmOVNqqwS3y77icv_JMC-yMK27FANlXTT41eFLmVowGAZJwNd-yhVWDzkRIVFMnS1IgeQjZafeoGYla_NcwZIOyOwUhRmrPB0X5-JfcckYYAGE8XcvGYSig79iNClxygPvnFRnrlVGEizmYQ\"\n    },\n    \"message\": \"Get Refresh Token\",\n    \"code\": 200\n}"
+						},
+						{
+							"name": "Invalid Refresh Token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refreshToken\": \"invalid token\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/refresh-token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"refresh-token"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"Token is not valid\",\n    \"code\": 403\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/v1/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"v1",
+								"profile"
+							]
+						},
+						"description": "API endpoint to get user details\n\n> A successful request returns user object"
+					},
+					"response": [
+						{
+							"name": "Get Profile Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{accessToken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"profile"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"61b82680d2a50208636c8120\",\n        \"username\": \"friskigatra\",\n        \"isActive\": true\n    },\n    \"message\": \"Get User\",\n    \"code\": 200\n}"
+						},
+						{
+							"name": "Expired Access Token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{accessToken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"profile"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"Access token expired!\",\n    \"code\": 401\n}"
+						},
+						{
+							"name": "Invalid Access Token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer invalid-token",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"profile"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"Invalid token!\",\n    \"code\": 403\n}"
+						}
+					]
+				}
+			],
+			"description": "This version contains following requests\n\n*   Register a new user\n*   Login a user by given credentials\n*   Request a new pair of tokens (refresh token)\n*   Get details for a user"
+		},
+		{
+			"name": "v2",
+			"item": [
+				{
+					"name": "Register",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{basicAuthPassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{basicAuthUsername}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "",
+									"description": "Username should be unique and in the format of email or ID mobile number (prefix of +62)",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"description": "Password should be matched with current password saved in the system",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/v2/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"v2",
+								"register"
+							]
+						},
+						"description": "API endpoint to Register a new user\n\n> A successful registration returns user object"
+					},
+					"response": [
+						{
+							"name": "Register Success V2",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"+6282119762787\",\r\n    \"password\": \"telkom123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v2/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v2",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"success\": true,\r\n    \"data\": {\r\n        \"mobileNumber\": \"+6282119762787\",\r\n        \"_id\": \"61b82490d2a50208636c811e\"\r\n    },\r\n    \"message\": \"Register User\",\r\n    \"code\": 200\r\n}"
+						},
+						{
+							"name": "User Already Exist",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"+6282119762787\",\r\n    \"password\": \"telkom123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v2/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v2",
+										"register"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"user already exist\",\n    \"code\": 409\n}"
+						},
+						{
+							"name": "Invalid Parameter",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"+6282119762787\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v2/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v2",
+										"register"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"\\\"password\\\" is required\",\n    \"code\": 409\n}"
+						}
+					]
+				},
+				{
+					"name": "Verify OTP",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{basicAuthPassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{basicAuthUsername}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "",
+									"description": "Username which registered in the system",
+									"type": "text"
+								},
+								{
+									"key": "otp",
+									"value": "",
+									"description": "OTP send to user by email or sms contain 6 characters of number",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/v2/verify",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"v2",
+								"verify"
+							]
+						},
+						"description": "API endpoint to Verify a registered user\n\n> A successful request returns success message"
+					},
+					"response": [
+						{
+							"name": "Verify OTP Success V2",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"+6282119762787\",\r\n    \"otp\": \"798462\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v2/verify",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v2",
+										"verify"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"success\": true,\n  \"data\": \"success\",\n  \"message\": \"Logout User\",\n  \"code\": 200\n}"
+						},
+						{
+							"name": "OTP Not Found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"+6282119762780\",\r\n    \"otp\": \"798462\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v2/verify",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v2",
+										"verify"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"success\": false,\r\n    \"data\": \"\",\r\n    \"message\": \"user's otp not found\",\r\n    \"code\": 404\r\n}"
+						},
+						{
+							"name": "OTP Does Not match",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"+6282119762787\",\r\n    \"otp\": \"798460\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v2/verify",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v2",
+										"verify"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"user's otp doesn't match\",\n    \"code\": 409\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{basicAuthPassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{basicAuthUsername}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "",
+									"description": "Username which registered in the system in the format of email or ID mobile number (prefix of +62)",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"description": "Password should be matched with current password saved in the system",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/v2/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"v2",
+								"login"
+							]
+						},
+						"description": "API endpoint to Login a user\n\n> A successful login returns access token and refresh token"
+					},
+					"response": [
+						{
+							"name": "Login Success V2",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"+6282119762787\",\r\n    \"password\": \"telkom123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v2/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v2",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjAzNzIsImV4cCI6MTYzOTQ2MTI3MiwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.o112Vnn3nfdbvRO5UNNz-oyDcvpy3XWqorjZEjVMz-Ho_0MZuweGMBoJVm1ELkpLYN33k2_ppSc9_Fzw7f6R3uik2CAbCyUqZht10vVxOFwwZ0CAHPbRgheulpdIQ1eCXJGKV28B913opNd9UkDRVoEBmU17u3Fv69i-E5czY6daFxgYkm417j9USZyoVpQmhiEccHYscc5EqjwDcNjnr8ILV1mxptBHq6jdX_PJD0q6JvB_x1VJJ3KPXB_7jLO2deqURuci2p8k8DJA5tC0loBF9D0lby0L_A8aNe3mVsF8EUvGNEtDdrLcQydZUxZ9QVjlnvUaQ5S5zDMg1aKyfEbHX5esIJ0P6Le4lqG1jo4x6_LC-6UJoIkaEOKk_chPGeSeUT4jrkkC72NRCbSO7_a0GWu9Z5VWuqui6u_lnz-p4l1Hli3uGwzhoZFlJ8xBgl6hQTl1SkKQiXZKjX4oN2r9cJ27B28Chjzax_TK3GRXdJ4jttNq4hWdknJq7HLM6thYYh1n6zF0rLYAZQ5spIYDnfkwsVmmxSLyHZTJMFi67GnvJo_taowTrKq4Na4YQBLRszQEf71WIiUWYrlCe0ezf51-KMNekfNO3H3aulZdPG4q6dQ39oiSiGEfXSwtMVqpyctWF7bBPtCu4b5JZzjiICB1hIjXgGUgMbY9Wek\",\n        \"refreshToken\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjAzNzIsImV4cCI6MTY0MDA2NTE3MiwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.PKaDPb3QeU_CypDthBEoOQ69n6WAwmRzgQQsQdo7I2BvVpvVBUXR9hBUAG6G9DYtz75JB1pesTThcJIQeIttWa6-GpyC4Y1N2MC9-FBrBbECIxBmkmD3ZlzwFxixhFpP77FDo2m63puhx4Kj3DZRIzJoItxV8WeE8t8wrKD4BdpogSis2g7SME1zsQTZRDWPXV5ggB_NO6Jl9vVB7qRNzfvFGk6Euqlpf5jBnyTCfVYoehIuTmGAaXG-SqYxGOJusxDxbY_k6j4yv4-z4dx9uKTTZWtGQfnIblhGv2ajoVuD5ZFR_syJbqLqjA1yu7c_K27PmcgROqy9WRhtIHRREmivFygevT2MBpGHnNTGc4PN6D7c75QheJFfmBYUAUyOeBrCfAT-iN6fnb5gdq0nEA8QU_YwJld7juov9AzLVP4fbIj8h7NxuJ5nEdGtYK9MdaAc_qTNOV-X4honY1ERgKVfHnEJ2-Q_LcptmkVEybW5qWnqG-9raI7rrZYLZ_wdjQC_DbglMY3gLbvWpig6U27VrP5fBvpHPNfA3keUkZaXMgQ3i9Tv9ZCBL50mVaqTbXgrKhPLScM5Z7k5cF_uC0pK_lem2t8X51ze3iTCJz-u-w1DirfB_hXyTBYDT1bBDhakSTPYdRnGpYaQrO97CvE5rlsXJKRKeOgDEJIBLGY\"\n    },\n    \"message\": \"Login User\",\n    \"code\": 200\n}"
+						},
+						{
+							"name": "Invalid Parameter",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"+6282119762787\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"register"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"\\\"password\\\" is required\",\n    \"code\": 409\n}"
+						},
+						{
+							"name": "User Not Found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"+6282119762780\",\r\n    \"password\": \"telkom123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v2/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v2",
+										"login"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"user not found\",\n    \"code\": 404\n}"
+						},
+						{
+							"name": "Password Does Not Match",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"+6282119762787\",\r\n    \"password\": \"telkom\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v2/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v2",
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"password invalid!\",\n    \"code\": 401\n}"
+						}
+					]
+				},
+				{
+					"name": "Refresh Token",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{basicAuthPassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{basicAuthUsername}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "refreshToken",
+									"value": "",
+									"description": "Current refresh token",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/v2/refresh-token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"v2",
+								"refresh-token"
+							]
+						},
+						"description": "API endpoint to generate a new pair of token\n\n> A successful request returns new access token and refresh token"
+					},
+					"response": [
+						{
+							"name": "Refresh Token Success V2",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refreshToken\": {{refreshToken}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/refresh-token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"refresh-token"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjA0NDEsImV4cCI6MTYzOTQ2MTM0MSwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.L1Jp5vDjQDyiF0deNyoGLxwU9_Exgdx_-srswVPPXB9AF4aTZxsyzNXFUMZC91Ga8nB5nxfA5GgGKIx6wlMxx-Wtj5NEklK_gML9y9u7S4bPjGdFVmAjP4Fb0thslqnnPtpPTQRaHcajEtAYgyZsfRhEL_Six5DwlepLMTG4s_VYn-TPrLYm9k0VgpQ7iQY0xrJZqsBgKRVDzrUync5CtUGCoOGtWgLFRSEv4y0yT5NohhO_12nTZP_MNt5gZwZF5_lo_82hgCGFNS9mXbxYwxXEbthGd6RaGRKiwxboSEjrWkp1aD0fl3vLCz5RErjPdUex7G7kU19fDipEhWK3TmlZtu8C0lYLaiBRvXyGkOHs92eUvBsRxIr_kMN670-FSIObsWu8RzDfR7b_GtDGFl8fRFPwxFNnA1w7aDRuAa2akG5cg1lZpB8V63ErMU24P2VC5dQxVYwHsNJC_VPpmD3FAVb57YXj4SfGLvautNJmjOz_zyWvQcSd2qj_iSF8RyBZiD_D9wfiecXp3PzufE5J7xxr5J4_EQZfm09vfZ34pxTXfjA0vMYaO9QJYDPsE384DbxrsVwhld9hmziOfQRX4M0M1_Q0pvk7DZgN_v__y6pfwFIx7jsqOUB3oZj0_4QnkoPbrcH1QS_nd7C6k2IbG-Wcp3nFG5nEkhUvtaI\",\n        \"refreshToken\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjA0NDEsImV4cCI6MTY0MDA2NTI0MSwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.JFWwa3atUYKJJCtKDPUw305AUeufnfTL5hulas9f_qTt4FIA8sCAvMtSggIGL3c8REZQwikHhF8ohewzLXlc3k052Ez2E-V1eJKkg4HJMncwcWEX0CLgUp21Dwq18jkiwSDizox64Pq00AgJX6-AAK8hU3RDV5ecH-TqvIsNSniBZxJMRxxxEblN5RhCelOaworqq2gpkdN1AdG6_j3YAQ4llW6v7CLi1IsipTp6jFYuLhl9QlyPHF98bttTDOlo9BZKqwvYoAQB6fPq4rsP7UD_P_ciWW4LUlzxVrA3lSUh1ER6eLZV8wjLCxMgMEOzaEytO2yWh3luSY-Y3ECBEsCzQOg579H6aP86gOTjHn_8rRm5dg_qKxAcJuD8uy3cpQN9k8fZLNT4HrEsfe-fMMcdEH4I0Peu8SBDdhFLNkegf6wPRdX81lF7ViUCheXLJRD3T76XO5xcrGN9Qq2OsYPezKBI_PWnn04G_ZDsj25sYsRoAiQtelKERakw6wuv5kWH7yBIUyZLoYSP8AyzuPRINhtarcCN2cQXQkhVgNT-bfa1lRfJ_1zEG85-17t18UnCl233r59Tt9qRD0BtCPUEUStVFBdP5yeL76paDbW3Rm3uYLfIlsySbj4TO4Sd_Ixr-7rTE1aWGB2T3y1q88hDXjU0qZRCAjdLkqv1aSo\"\n    },\n    \"message\": \"Get Refresh Token\",\n    \"code\": 200\n}"
+						},
+						{
+							"name": "Invalid Refresh Token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refreshToken\": \"invalid-token\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/refresh-token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"refresh-token"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"Token is not valid\",\n    \"code\": 403\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/v2/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"v2",
+								"profile"
+							]
+						},
+						"description": "API endpoint to get user details\n\n> A successful request returns user object"
+					},
+					"response": [
+						{
+							"name": "Get Profile Success V2",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{accessToken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"profile"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"61b82b7dd2a50208636c8121\",\n        \"mobileNumber\": \"+6282119762787\",\n        \"password\": \"bbf89f764bfea1cfda30e3a9b1648918:cc4e4517ad99a948b2e5dce510596426\",\n        \"isConfirmed\": true\n    },\n    \"message\": \"Get User\",\n    \"code\": 200\n}"
+						},
+						{
+							"name": "Expired Access Token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjE2NTUsImV4cCI6MTYzOTQ2MjU1NSwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.A_nOOhj648HbDs_HAU-S3vdu-7ScG1i1S_J-DkwzRHFdDUtfokpKY_xjSv1ZfRH7T9RlS35xftWsjhv4lE6JArbGtUEZeS-bQYasTYMWOcC_AJNORQelkWo5WEDd_F9h6K1dh7CARzb9Q9lv1y55Wbi6U2m7IcG1jq4SbUOG1800gZNHszd5WVYBRKVxcPTljPH2nVX3dAbBwEHWiPPUg5ACXPDtI04wBXuEbQONud50SBGvjVL107nFURYddUcehGv-j10ve43nByIOXZujapkSwp9-1mYdQ31fdO09I2w9SmX8uIrLfyscQpiiYLq1PZyDH8Jujp4yMgC3aW71KMaqcr7W7j9O6wM810WeQGTGIQ6icyk6kOEgTb7RDebbRyTb7rMJgY_Gru8Tmve1eXl6X5BWmFzhqd7P3w83D7pwM2bzUvN2UMJnIbHvIwLXkiakrxyzlrFU7bgu6_tgWU6v8X5eaXxC9SXWRRii4U6kX818avV3_ZSP6ghBxmYzjoWIW9gVpVXT1vGth-HJNttZptg5uaKhiEKykwqiZmWFMDWWBRKpdFb79uM8Y1dWV3nJSN98bTBsPIWFBYbiHaETroL1gohwNSzmiwMesYSJMcHfp214nZOgPsE2obzVIBILEV7mHph0wZRzpaF6Nie9Fe-meZWYnMwj6Smz91U",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"profile"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"Access token expired!\",\n    \"code\": 401\n}"
+						},
+						{
+							"name": "Invalid Access Token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer invalid-token",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"profile"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"Invalid token!\",\n    \"code\": 403\n}"
+						},
+						{
+							"name": "Blacklisted Access Token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjAzMDIsImV4cCI6MTYzOTQ2MTIwMiwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.lorfhSAE1F1FygnN4c2FtIuhhJgoP8xQazr_9qEajCIROT-6tQWor-bowbu-kN-bind0s_SK40z0u7ZN1yTrlCWROiBL8LEiLjyyqNYx2lNYioDaSaksZoOqHfCTdQyR8UUXqUf7vCfZ5HVMAJdlNx3sV2dAE0gkQOWPAoDHWrrHN9EgTghZXpq9VpwKwZC8hwUKf_o91iOuUDTHlvalC3Fwglk3-7bLAsRuzbQx_kAVAJvzq_Dbh8ZvUa_DPetOi9TpEdJUM-BEEsDFMZRc4kLC4LCF2NHosLNvJ4urcrMVwsW1yCcxZ3dDDwtkrjqJXhcRadEakr1e9bxn8Xcng3a8XD3oxBEdemakkzhN0ZzBwUnbq1VtXyVT9oey0Ye6R1CM96DdcxNXn99tZROW1R3qLHjGnZXKxiJsoiU-OcnEnZJvKJfyREdw_5SDzokkEpfR7SahiFIAe23b5AxURsuicZ_ASVvokg_Bf-A_mxqcZRrjWFoh5I13qAZhrQJyhA_1zKKVDx8LbJj9Ls3MpKrV5onpws8ibCKmc_GgixCzhCBrXAR_4E8f1YgOgns4jbxsjllgmyWAoif65grHmkKauXb7V0LuzZ7IAdlHoF6DImRnRbyPx0MK8XknGhlZMIzU3JiAzRHhleFqRR5dH-Vflbzw6sjovJSX_fGOY9k",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/v2/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v2",
+										"profile"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"Blacklisted token!\",\n    \"code\": 403\n}"
+						}
+					]
+				},
+				{
+					"name": "Logout",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{basicAuthUsername}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{basicAuthPassword}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "accessToken",
+									"value": "",
+									"description": "Current access token",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/v2/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"v2",
+								"logout"
+							]
+						},
+						"description": "API endpoint to Logout a user\n\n> A successful request returns success message"
+					},
+					"response": [
+						{
+							"name": "Logout Success V2",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accessToken\": {{accessToken}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"profile"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": \"success\",\n    \"message\": \"Logout User\",\n    \"code\": 200\n}"
+						},
+						{
+							"name": "Expired Access Token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{basicToken}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accessToken\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWI4MmI3ZGQyYTUwMjA4NjM2YzgxMjEiLCJpYXQiOjE2Mzk0NjAzNzIsImV4cCI6MTYzOTQ2MTI3MiwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.o112Vnn3nfdbvRO5UNNz-oyDcvpy3XWqorjZEjVMz-Ho_0MZuweGMBoJVm1ELkpLYN33k2_ppSc9_Fzw7f6R3uik2CAbCyUqZht10vVxOFwwZ0CAHPbRgheulpdIQ1eCXJGKV28B913opNd9UkDRVoEBmU17u3Fv69i-E5czY6daFxgYkm417j9USZyoVpQmhiEccHYscc5EqjwDcNjnr8ILV1mxptBHq6jdX_PJD0q6JvB_x1VJJ3KPXB_7jLO2deqURuci2p8k8DJA5tC0loBF9D0lby0L_A8aNe3mVsF8EUvGNEtDdrLcQydZUxZ9QVjlnvUaQ5S5zDMg1aKyfEbHX5esIJ0P6Le4lqG1jo4x6_LC-6UJoIkaEOKk_chPGeSeUT4jrkkC72NRCbSO7_a0GWu9Z5VWuqui6u_lnz-p4l1Hli3uGwzhoZFlJ8xBgl6hQTl1SkKQiXZKjX4oN2r9cJ27B28Chjzax_TK3GRXdJ4jttNq4hWdknJq7HLM6thYYh1n6zF0rLYAZQ5spIYDnfkwsVmmxSLyHZTJMFi67GnvJo_taowTrKq4Na4YQBLRszQEf71WIiUWYrlCe0ezf51-KMNekfNO3H3aulZdPG4q6dQ39oiSiGEfXSwtMVqpyctWF7bBPtCu4b5JZzjiICB1hIjXgGUgMbY9Wek\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/v1/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v1",
+										"profile"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"data\": \"\",\n    \"message\": \"Access token expired!\",\n    \"code\": 401\n}"
+						}
+					]
+				}
+			],
+			"description": "This version extends v1 capability of verification mechanism and JWT revocation strategy.\n\nIt contains following requests\n\n*   Register a new user\n*   **Verify registered user by OTP**\n*   Login a user by given credentials\n*   Request a new pair of tokens (refresh token)\n*   Get details for a user\n*   **Logout a user**"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "localhost:8001"
+		},
+		{
+			"key": "basicAuthUsername",
+			"value": "telkom"
+		},
+		{
+			"key": "basicAuthPassword",
+			"value": "da1c25d8-37c8-41b1-afe2-42dd4825bfea"
+		},
+		{
+			"key": "basicToken",
+			"value": "dGVsa29tOmRhMWMyNWQ4LTM3YzgtNDFiMS1hZmUyLTQyZGQ0ODI1YmZlYQ=="
+		},
+		{
+			"key": "accessToken",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MTdiOTcxOGVkMTUzZTAwMTFhMDkwMmIiLCJpYXQiOjE2MzU0ODk5ODcsImV4cCI6MTYzNTQ5MDg4NywiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.TDRhJLGzILdqRpGGGezhNn43O5m7LTjGAa9hYavSRFE8BmUtsEz9fLp7VuA66pIh1WxWe2piz51W4UigIGUmXxYTDc_6GcptUDgH0wWweQOhFTGFvK4ebSntwaR5eXRJBcRg9NOdyb3YFKluOekjEHpdd0SroZ6EKgJ1mxsnqRjD6l23c2G6x1IpD9b4DimInYI6GQiTCltm-K3MdsHdhlW5ip5gp4-b6AgXzUKc6FfR7_NxwwYv4DXXQh5KPK6UaD9LDmjv_zMQ7ZyZA_aG1cy1q6339ccrfmnubUzBjaUcnxn0Imv2DpJyA9ympZEiLsNTc9PrFEBOfwWqjegEiKhe3akXY44RWFxxALZyc2bA2YnPcVLBgoGU8HSkDngKpmTt9cGWfr0vx27DHq3Z5pJg_Sfj-WzLM_5afBxJQJzxkNGlY06EmVpRd1CTslzY0NvWFN88X_lFcjxYUebyaJ-qZlWGMJfvl9s9Xfcysyf1o7ER3moXfR1V0w_i3LrcYsH9reCqCfPD8AF2QikSeGNXL9dOMNJkPnk5IFj6RIJKEMONnhXHu4jTRpa5tt5byK4ITRva64Bb5POIJ9Xhd9R0DJJLIka0ylkFnUpZlwLbzU86xgRM_RPlevrqa8PtFSKV6IwEUrwUwrpB8AcdrNL7liruegC0DO7-l93PArQ"
+		},
+		{
+			"key": "refreshToken",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyaXNraS5nYXRyYUBnbWFpbC5jb20iLCJzdWIiOiI2MTY2NGJiOTZlMjc4MGEwNTdkNjlmMDAiLCJpYXQiOjE2MzQxMzc0MzEsImV4cCI6MTYzNDc0MjIzMSwiYXVkIjoiOTdiMzMxOTMtNDNmZi00ZTU4LTkxMjQtYjNhOWI5ZjcyYzM0IiwiaXNzIjoidGVsa29tZGV2In0.h2La0_clNFTmi-2Xs2AcuwVZj1kOitUpWvvLZs5l5nNjizqBIau5KwxU0BqJ0imDIZZeh4AtAcYNbiTCT81Bduh9ngkc0A69Dt6fmOHFlO7fTESGJaOdmBt5t8LJx2G7p43JGkUVUglHJ-fOIBKq20O2utV1C8xDffIf96DvQ6FvNWdz3fYEuR1RXq-w8I0tVxy5zQ1WCJtYb3VyAPRSchlCyL5M1PFQpSmI6u1Ec4NhbrkAv0ksc1RuA6f0f9eR_fgVm0ChnGpfUJBYX_1RFX361d6FZvvz2rIpQe1dQ-Ft9gacDiBl26KoaGPTVBa-3xzcTMzKYnEHMcxfdC34bYfcwtKSZ6E5nZFQWSrc0vmwenXzmpO-MJ2Qg1aHmLMz78CahlKklkY7ja6wEeq4K7adNug3hwxQiLn4x87oDE-ptGtfYubN79h-4wSCyF4cHjjBZD6trS_7M_ZUdvGg7RB6eqLAfvC6UjAWTySigVsw-6ID1Ytu9RO-0d7deFvejR7Rq-2iv-pmx1p47exXtmzIruypVOMRDF6yiLf05YsD2Z_aaNSyeJ00v-tpJbHB21xHXbuUVoagkpASRsxVnFJVpywtSRyU4u3UNXzNVvyD4n7S9WKWnIEmUOYi6GbjDj3RKDGvfwQs_otjsiLGK1bDG-G5OpTCq_2LLj5NKo4"
+		}
+	]
+}
